@@ -114,6 +114,3 @@ env/
 *.dump
 dump.rdb
 /postgres
-
-# Certificates
-connectedAppCertificate.pem
