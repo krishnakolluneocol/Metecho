@@ -46,7 +46,7 @@ enable these additional permissions:
 
 To enable logging in with GitHub, set the "User authorization callback URL" to
 `https://<your-deployed-url>/accounts/github/login/callback/`, and be sure the
-"Request user authorization (OAuth) during installation" box is checked.
+"Request user authorization (OAuth) during installation" box is checked. 
 
 To enable GitHub webhooks, set the "Webhook URL" to
 `https://<your-deployed-url>/api/hook/`, and be sure the "Active" box is checked
