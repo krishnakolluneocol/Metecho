@@ -397,7 +397,7 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
     # Pass extra env vars when running in the context of Heroku stack-22.
     # To determine this, check for the presence of env vars related to dyno metadata.
     # The heroku labs feature must be enabled on the application for this to work:
-    # https://devcenter.heroku.com/articles/dyno-metadata#dyno-metadata
+    # https://devcenter.heroku.com/articles/dyno-metadata#dyno-metadata 
     if os.environ.get("HEROKU_APP_ID"):  # pragma: nocover
         heroku_specific_env = {
             "PYTHONPATH": os.environ["PYTHONPATH"],
