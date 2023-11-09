@@ -167,6 +167,7 @@ def get_repo_info(user, repo_id=None, repo_owner=None, repo_name=None):
     gh = gh_as_user(user) if user else gh_as_repo(repo_owner, repo_name)
     if repo_id is None:
         return gh.repository(repo_owner, repo_name)
+    logger.info(f"Parameters for get_repo_info {repo_id} {repo_owner} {repo_name}")
     return gh.repository_with_id(repo_id)
 
 
