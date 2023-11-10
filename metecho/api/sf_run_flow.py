@@ -393,7 +393,7 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
         "HOME": project_path,
         "PATH": os.environ["PATH"],
         # Added by Krishna Kollu
-        "GITHUB_APP_ID": settings.GITHUB_APP_ID,
+        "GITHUB_APP_ID": str(settings.GITHUB_APP_ID),
         "GITHUB_APP_KEY": settings.GITHUB_APP_KEY
     }
 
