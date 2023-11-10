@@ -393,13 +393,14 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
         # needed by sfdx
         "HOME": project_path,
         "PATH": os.environ["PATH"],
-        # Added by Krishna Kollu
+        # Added by Krishna Kollu. Need to refactor the neocol unlocked packages to be applied more dynamically
         "GITHUB_APP_ID": str(settings.GITHUB_APP_ID),
         "GITHUB_APP_KEY": settings.GITHUB_APP_KEY.decode('utf-8'),
         "NEOCOL_TEST": os.environ.get("NEOCOL_TEST"),
         "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_ASYNC_ACTION_FRAMEWORK_V1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_ASYNC_ACTION_FRAMEWORK_V1"),
         "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_COMMON_UTILITIES_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_COMMON_UTILITIES_P1"),
         "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CUSTOM_SCHEDULES_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CUSTOM_SCHEDULES_P1"),
+        "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CPQ_CALM_CONNECTOR_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CPQ_CALM_CONNECTOR_P1"),
         "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_STRIPE_HOSTED_PAYMENT_PAGE_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_STRIPE_HOSTED_PAYMENT_PAGE_P1")
     }
 
