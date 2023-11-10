@@ -371,7 +371,7 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
     # Run flow in a subprocess so we can control the environment
     
     logger.info(f"GITHUB_APP_ID {settings.GITHUB_APP_ID}")
-    logger.info(f"GITHUB_APP_ID {os.environ('GITHUB_APP_ID')}")
+    logger.info(f"GITHUB_APP_ID {os.environ['GITHUB_APP_ID']}")
     logger.info(f"NEOCOL_TEST {os.environ['NEOCOL_TEST']}")
 
     gh_token = user.gh_token
