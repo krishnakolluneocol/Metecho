@@ -399,7 +399,7 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
         "PATH": os.environ["PATH"],
         # Added by Krishna Kollu
         "GITHUB_APP_ID": str(settings.GITHUB_APP_ID),
-        "GITHUB_APP_KEY": str(settings.GITHUB_APP_KEY, encoding='utf-8')
+        "GITHUB_APP_KEY": settings.GITHUB_APP_KEY.decode('utf-8')
     }
 
     # Pass extra env vars when running in the context of Heroku stack-22.
