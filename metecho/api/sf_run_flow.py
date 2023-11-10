@@ -369,6 +369,11 @@ def create_org(
 def run_flow(*, cci, org_config, flow_name, project_path, user):
     """Run a flow on a scratch org"""
     # Run flow in a subprocess so we can control the environment
+    
+    logger.info(f"GITHUB_APP_ID {settings.GITHUB_APP_ID}")
+    logger.info(f"GITHUB_APP_ID {os.environ('GITHUB_APP_ID')}")
+    logger.info(f"NEOCOL_TEST {os.environ['NEOCOL_TEST']}")
+
     gh_token = user.gh_token
     command = shutil.which("cci")
     args = [command, "flow", "run", flow_name, "--org", "dev"]
@@ -394,11 +399,8 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
         "PATH": os.environ["PATH"],
         # Added by Krishna Kollu
         "GITHUB_APP_ID": str(settings.GITHUB_APP_ID),
-        "GITHUB_APP_KEY": settings.GITHUB_APP_KEY
+        "GITHUB_APP_KEY": str(settings.GITHUB_APP_KEY, encoding='utf-8')
     }
-
-    logger.info(f"GITHUB_APP_ID {settings.GITHUB_APP_ID}")
-    logger.info(f"NEOCOL_TEST {os.environ['NEOCOL_TEST']}")
 
     # Pass extra env vars when running in the context of Heroku stack-22.
     # To determine this, check for the presence of env vars related to dyno metadata.
