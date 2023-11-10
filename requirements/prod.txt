@@ -209,7 +209,7 @@ markdown==3.4.1
     # via
     #   -r requirements/prod.in
     #   sfdo-template-helpers
-markdown-it-py==2.1.0
+markdown-it-py==2.2.0
     # via
     #   cumulusci
     #   rich
