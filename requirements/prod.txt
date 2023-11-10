@@ -82,7 +82,8 @@ cryptography==39.0.1
     #   secretstorage
     #   service-identity
     #   sfdo-template-helpers
-cumulusci==3.76.0
+cumulusci @ git+https://github.com/krishnakolluneocol/CumulusCI.git@main
+#cumulusci==3.76.0
     # via -r requirements/prod.in
 daphne==3.0.2
     # via channels
