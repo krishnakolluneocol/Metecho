@@ -392,6 +392,12 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
         # needed by sfdx
         "HOME": project_path,
         "PATH": os.environ["PATH"],
+        # Added by Krishna Kollu
+        "GITHUB_APP_ID": os.environ["GITHUB_APP_ID"],
+        "GITHUB_APP_KEY": os.environ["GITHUB_APP_KEY"],
+        "GITHUB_CLIENT_ID": os.environ["GITHUB_CLIENT_ID"],
+        "GITHUB_CLIENT_SECRET": os.environ["GITHUB_CLIENT_SECRET"],
+        "GITHUB_HOOK_SECRET": os.environ["GITHUB_HOOK_SECRET"],
     }
 
     # Pass extra env vars when running in the context of Heroku stack-22.
