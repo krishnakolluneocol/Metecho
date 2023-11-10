@@ -393,12 +393,12 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
         "HOME": project_path,
         "PATH": os.environ["PATH"],
         # Added by Krishna Kollu
-        "GITHUB_APP_ID": os.environ["GITHUB_APP_ID"],
-        "GITHUB_APP_KEY": os.environ["GITHUB_APP_KEY"],
-        "GITHUB_CLIENT_ID": os.environ["GITHUB_CLIENT_ID"],
-        "GITHUB_CLIENT_SECRET": os.environ["GITHUB_CLIENT_SECRET"],
-        "GITHUB_HOOK_SECRET": os.environ["GITHUB_HOOK_SECRET"],
+        "GITHUB_APP_ID": settings.GITHUB_APP_ID,
+        "GITHUB_APP_KEY": settings.GITHUB_APP_KEY
     }
+
+    logger.info(f"GITHUB_APP_ID {settings.GITHUB_APP_ID}")
+    logger.info(f"NEOCOL_TEST {os.environ['NEOCOL_TEST']}")
 
     # Pass extra env vars when running in the context of Heroku stack-22.
     # To determine this, check for the presence of env vars related to dyno metadata.
