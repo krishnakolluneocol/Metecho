@@ -1,11 +1,7 @@
-import contextlib
-import json
-import logging
-import os
+import logging 
+import os 
 import shutil
 import subprocess
-import time
-from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +12,6 @@ def run_flow():
     command = shutil.which("robot")
     args = [command, "/app/debug/test.robot"]
     env = {
-        # needed by sfdx
         "HOME": project_path,
         "PATH": os.environ["PATH"],
         "NEOCOL_TEST": os.environ.get("NEOCOL_TEST"),
@@ -25,9 +20,9 @@ def run_flow():
         "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CUSTOM_SCHEDULES_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CUSTOM_SCHEDULES_P1"),
         "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CPQ_CALM_CONNECTOR_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CPQ_CALM_CONNECTOR_P1"),
         "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_STRIPE_HOSTED_PAYMENT_PAGE_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_STRIPE_HOSTED_PAYMENT_PAGE_P1"),
-        "PYTHONPATH": os.environ["PYTHONPATH"],
-        "LD_LIBRARY_PATH": os.environ["LD_LIBRARY_PATH"],
-        "LIBRARY_PATH": os.environ["LIBRARY_PATH"]
+        "PYTHONPATH": os.environ.get("PYTHONPATH"),
+        "LD_LIBRARY_PATH": os.environ.get("LD_LIBRARY_PATH"),
+        "LIBRARY_PATH": os.environ.get("LIBRARY_PATH")
     }
 
     p = subprocess.Popen(
@@ -40,9 +35,4 @@ def run_flow():
         cwd=project_path,
     )
     orig_stdout, _ = p.communicate()
-    if p.returncode:
-        p = subprocess.run(
-            [command, "error", "info"], capture_output=True, env={"HOME": project_path}
-        )
-        traceback = p.stdout.decode("utf-8")
-        logger.warning(traceback)
+    print(orig_stdout)
