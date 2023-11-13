@@ -1,31 +1,48 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+import contextlib
+import json
+import logging
+import os
+import shutil
+import subprocess
+import time
+from datetime import datetime
 
-def test_chrome_driver():
-    # Set up Chrome options
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    #options.add_argument('--ignore-certificate-errors')
-    options.add_argument('--disable-dev-shm-usage')
-    #options.add_argument('--disable-gpu')
-    options.add_argument('--disable-background-timer-throttling')
+logger = logging.getLogger(__name__)
 
-    driver = webdriver.Chrome(options=options)
-    driver.set_page_load_timeout(90)
+def run_flow():
+    """Run a flow on a scratch org"""
+    # Run flow in a subprocess so we can control the environment
+    project_path = '/app'
+    command = shutil.which("robot")
+    args = [command, "/app/debug/test.robot"]
+    env = {
+        # needed by sfdx
+        "HOME": project_path,
+        "PATH": os.environ["PATH"],
+        "NEOCOL_TEST": os.environ.get("NEOCOL_TEST"),
+        "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_ASYNC_ACTION_FRAMEWORK_V1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_ASYNC_ACTION_FRAMEWORK_V1"),
+        "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_COMMON_UTILITIES_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_COMMON_UTILITIES_P1"),
+        "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CUSTOM_SCHEDULES_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CUSTOM_SCHEDULES_P1"),
+        "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CPQ_CALM_CONNECTOR_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CPQ_CALM_CONNECTOR_P1"),
+        "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_STRIPE_HOSTED_PAYMENT_PAGE_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_STRIPE_HOSTED_PAYMENT_PAGE_P1"),
+        "PYTHONPATH": os.environ["PYTHONPATH"],
+        "LD_LIBRARY_PATH": os.environ["LD_LIBRARY_PATH"],
+        "LIBRARY_PATH": os.environ["LIBRARY_PATH"]
+    }
 
-    driver.get('https://www.xe.com/currencyconverter/convert/?Amount=1&From=USD&To=CAD')
-
-    min_exchange_rate = 1.3
-    max_exchange_rate = 1.4
-
-    element = driver.find_element(By.XPATH, '//*[@id="__next"]/div[3]/div[2]/section/div[2]/div/main/div/div[2]/div[1]/p[2]')
-
-    exchange_rate = float(element.text.split(' ')[0])
-
-    driver.quit()
-
-    return exchange_rate
-
-if __name__ == "__main__":
-    rate = test_chrome_driver()
-    print(f"Exchange Rate: {rate}")
+    p = subprocess.Popen(
+        args,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        stdin=subprocess.PIPE,
+        close_fds=True,
+        env=env,
+        cwd=project_path,
+    )
+    orig_stdout, _ = p.communicate()
+    if p.returncode:
+        p = subprocess.run(
+            [command, "error", "info"], capture_output=True, env={"HOME": project_path}
+        )
+        traceback = p.stdout.decode("utf-8")
+        logger.warning(traceback)
