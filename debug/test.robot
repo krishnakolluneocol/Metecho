@@ -9,6 +9,8 @@ Library        cumulusci.robotframework.CumulusCI
 Library        cumulusci.robotframework.Salesforce  
 Library        cumulusci.robotframework.Performance
 
+Suite Setup     Open Test Browser Chrome    https://www.google.com       
+
 *** Variables ***
 ${BROWSER}          headlesschrome
 ${SELENIUM_SPEED}   0
@@ -73,6 +75,5 @@ Chrome Set Headless
 
 *** Test Cases ***
 Open Website and Verify Title
-    Open Test Browser Chrome    https://www.google.com       
     Title Should Be    Google Boss
     Close Browser
