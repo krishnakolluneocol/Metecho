@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 def test_chrome_driver():
     # Set up Chrome options
     options = webdriver.ChromeOptions()
-    options.add_argument('--headless=new')
+    options.add_argument('--headless')
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
