@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 
 def test_chrome_driver():
     # Set up Chrome options
@@ -16,11 +17,14 @@ def test_chrome_driver():
     min_exchange_rate = 1.3
     max_exchange_rate = 1.4
 
-    element = driver.find_element(by=By.XPATH, value='//*[@id="__next"]/div[3]/div[2]/section/div[2]/div/main/div/div[2]/div[1]/p[2]')
+    element = driver.find_element(By.XPATH, '//*[@id="__next"]/div[3]/div[2]/section/div[2]/div/main/div/div[2]/div[1]/p[2]')
 
     exchange_rate = float(element.text.split(' ')[0])
 
-    driver.quit()  # maybe close instead?
+    driver.quit()
+
+    return exchange_rate
 
 if __name__ == "__main__":
-    test_chrome_driver()
+    rate = test_chrome_driver()
+    print(f"Exchange Rate: {rate}")
