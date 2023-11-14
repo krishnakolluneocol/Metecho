@@ -377,9 +377,13 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
     print(f"******* sf_run_flow.py: Able to start selenium chrome")  
     driver.quit()
     print(f"******* sf_run_flow.py: Able to exit selenium chrome")
-        
-    # Run flow in a subprocess so we can control the environment
+    
+    # Debug variables set
+    keys = os.environ.keys()
+    keys_string = ", ".join(keys)
+    print(f"Environment Variable Keys: {keys_string}")
 
+    # Run flow in a subprocess so we can control the environment
     gh_token = user.gh_token
     command = shutil.which("cci")
     args = [command, "flow", "run", flow_name, "--org", "dev"]
