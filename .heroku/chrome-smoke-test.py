@@ -9,4 +9,4 @@ try:
     print(f"Able to open chrome")
 except Exception as e:
     print(f"Unable to open chrome:\n{e}")
-    sys.exit(1)
+    sys.exit(1) 
