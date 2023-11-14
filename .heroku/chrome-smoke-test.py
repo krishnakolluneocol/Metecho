@@ -7,6 +7,7 @@ soptions.add_argument("--no-sandbox")
 soptions.add_argument("--headless")
 soptions.add_argument("--disable-dev-shm-usage")
 soptions.add_argument('--disable-gpu')
+soptions.add_argument('--remote-debugging-port=9222')
 try:
     driver = selenium.webdriver.Chrome(options=soptions)
     driver.quit()
