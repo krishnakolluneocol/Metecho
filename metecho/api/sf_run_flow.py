@@ -390,58 +390,66 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
     gh_token = user.gh_token
     command = shutil.which("cci")
     args = [command, "flow", "run", flow_name, "--org", "dev"]
-    env = {
-        "CUMULUSCI_KEYCHAIN_CLASS": "cumulusci.core.keychain.EnvironmentProjectKeychain",
-        # We need to set the "scratch" flag to true because some flows check for it,
-        # but we need the org config to NOT be a ScratchOrgConfig which tries to use sfdx
-        "CUMULUSCI_SCRATCH_ORG_CLASS": "cumulusci.core.config.OrgConfig",
-        "CUMULUSCI_DISABLE_REFRESH": "1",
-        "CUMULUSCI_ORG_dev": json.dumps(
-            {
-                "org_id": org_config.org_id,
-                "id": org_config.id,
-                "instance_url": org_config.instance_url,
-                "access_token": org_config.access_token,
-                "scratch": True,
-                "config_name": org_config.config_name,
-            }
-        ),
-        "GITHUB_TOKEN": gh_token,
-        # needed by sfdx
-        "HOME": project_path,
-        "PATH": os.environ["PATH"],
-        # Added by Krishna Kollu. Need to refactor the neocol unlocked packages to be applied more dynamically
-        "GITHUB_APP_ID": str(settings.GITHUB_APP_ID),
-        "GITHUB_APP_KEY": settings.GITHUB_APP_KEY.decode('utf-8'),
-        "GOOGLE_CHROME_BIN": os.environ.get("GOOGLE_CHROME_BIN"),
-        "GOOGLE_CHROME_SHIM": os.environ.get("GOOGLE_CHROME_SHIM"),
-        "PYTHONHOME": os.environ.get("PYTHONHOME"),
-        "LIBRARY_PATH": os.environ.get("LIBRARY_PATH"),
-        "CPPPATH": os.environ.get("CPPPATH"),
-        "LD_LIBRARY_PATH": os.environ.get("LD_LIBRARY_PATH"),
-        "INCLUDE_PATH": os.environ.get("INCLUDE_PATH"),
-        "CPATH": os.environ.get("CPATH"),
-        "PKG_CONFIG_PATH": os.environ.get("PKG_CONFIG_PATH"),
-        "XDG_DATA_HOME": os.environ.get("XDG_DATA_HOME"),
-        "NEOCOL_TEST": os.environ.get("NEOCOL_TEST"),
-        "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_ASYNC_ACTION_FRAMEWORK_V1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_ASYNC_ACTION_FRAMEWORK_V1"),
-        "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_COMMON_UTILITIES_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_COMMON_UTILITIES_P1"),
-        "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CUSTOM_SCHEDULES_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CUSTOM_SCHEDULES_P1"),
-        "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CPQ_CALM_CONNECTOR_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CPQ_CALM_CONNECTOR_P1"),
-        "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_STRIPE_HOSTED_PAYMENT_PAGE_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_STRIPE_HOSTED_PAYMENT_PAGE_P1")
-    }
-
-    # Pass extra env vars when running in the context of Heroku stack-22.
-    # To determine this, check for the presence of env vars related to dyno metadata.
-    # The heroku labs feature must be enabled on the application for this to work:
-    # https://devcenter.heroku.com/articles/dyno-metadata#dyno-metadata 
-    if os.environ.get("HEROKU_APP_ID"):  # pragma: nocover
-        heroku_specific_env = {
-            "PYTHONPATH": os.environ["PYTHONPATH"],
-            "LD_LIBRARY_PATH": os.environ["LD_LIBRARY_PATH"],
-            "LIBRARY_PATH": os.environ["LIBRARY_PATH"],
+    env = os.environ.copy()
+    env["CUMULUSCI_KEYCHAIN_CLASS"] = "cumulusci.core.keychain.EnvironmentProjectKeychain"
+    env["CUMULUSCI_SCRATCH_ORG_CLASS"] = "cumulusci.core.config.OrgConfig"
+    env["CUMULUSCI_DISABLE_REFRESH"] = "1"
+    env["CUMULUSCI_ORG_dev"] = json.dumps(
+        {
+            "org_id": org_config.org_id,
+            "id": org_config.id,
+            "instance_url": org_config.instance_url,
+            "access_token": org_config.access_token,
+            "scratch": True,
+            "config_name": org_config.config_name
         }
-        env = env | heroku_specific_env
+    )
+    env["GITHUB_TOKEN"] = gh_token
+    env["HOME"] = project_path
+
+    # Old Version
+    # env = {
+    #     "CUMULUSCI_KEYCHAIN_CLASS": "cumulusci.core.keychain.EnvironmentProjectKeychain",
+    #     # We need to set the "scratch" flag to true because some flows check for it,
+    #     # but we need the org config to NOT be a ScratchOrgConfig which tries to use sfdx
+    #     "CUMULUSCI_SCRATCH_ORG_CLASS": "cumulusci.core.config.OrgConfig",
+    #     "CUMULUSCI_DISABLE_REFRESH": "1",
+    #     "CUMULUSCI_ORG_dev": json.dumps(
+    #         {
+    #             "org_id": org_config.org_id,
+    #             "id": org_config.id,
+    #             "instance_url": org_config.instance_url,
+    #             "access_token": org_config.access_token,
+    #             "scratch": True,
+    #             "config_name": org_config.config_name,
+    #         }
+    #     ),
+    #     "GITHUB_TOKEN": gh_token,
+    #     # needed by sfdx
+    #     "HOME": project_path,
+    #     "PATH": os.environ["PATH"],
+    #     # Added by Krishna Kollu. Need to refactor the neocol unlocked packages to be applied more dynamically
+    #     "GITHUB_APP_ID": str(settings.GITHUB_APP_ID),
+    #     "GITHUB_APP_KEY": settings.GITHUB_APP_KEY.decode('utf-8'),
+    #     "NEOCOL_TEST": os.environ.get("NEOCOL_TEST"),
+    #     "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_ASYNC_ACTION_FRAMEWORK_V1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_ASYNC_ACTION_FRAMEWORK_V1"),
+    #     "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_COMMON_UTILITIES_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_COMMON_UTILITIES_P1"),
+    #     "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CUSTOM_SCHEDULES_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CUSTOM_SCHEDULES_P1"),
+    #     "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CPQ_CALM_CONNECTOR_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_CPQ_CALM_CONNECTOR_P1"),
+    #     "NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_STRIPE_HOSTED_PAYMENT_PAGE_P1": os.environ.get("NEOCOL_UNLOCKED_PACKAGE_PASSWORD_FOR_STRIPE_HOSTED_PAYMENT_PAGE_P1")
+    # }
+
+    # # Pass extra env vars when running in the context of Heroku stack-22.
+    # # To determine this, check for the presence of env vars related to dyno metadata.
+    # # The heroku labs feature must be enabled on the application for this to work:
+    # # https://devcenter.heroku.com/articles/dyno-metadata#dyno-metadata 
+    # if os.environ.get("HEROKU_APP_ID"):  # pragma: nocover
+    #     heroku_specific_env = {
+    #         "PYTHONPATH": os.environ["PYTHONPATH"],
+    #         "LD_LIBRARY_PATH": os.environ["LD_LIBRARY_PATH"],
+    #         "LIBRARY_PATH": os.environ["LIBRARY_PATH"],
+    #     }
+    #     env = env | heroku_specific_env
 
     p = subprocess.Popen(
         args,
