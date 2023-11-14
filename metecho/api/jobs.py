@@ -453,8 +453,10 @@ def _create_org_and_run_flow(
     if flow_name:
         try:
             # Krishna Kollu - This is for debugging purposes and should be removed
+            print(f"******* jobs.py start")
             soptions = selenium.webdriver.chrome.options.Options()
             soptions.headless = True
+            soptions.binary_location = '/app/.apt/usr/bin/google-chrome'
             driver = selenium.webdriver.Chrome(options=soptions)
             print(f"******* jobs.py: Able to start selenium chrome")
             driver.quit() 

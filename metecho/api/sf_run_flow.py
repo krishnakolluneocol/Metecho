@@ -371,8 +371,10 @@ def create_org(
 def run_flow(*, cci, org_config, flow_name, project_path, user):
     """Run a flow on a scratch org"""
     # Krishna Kollu - This is for debugging purposes and should be removed
+    print(f"******* sf_run_flow.py start")  
     soptions = selenium.webdriver.chrome.options.Options()
     soptions.headless = True
+    soptions.binary_location = '/app/.apt/usr/bin/google-chrome'
     driver = selenium.webdriver.Chrome(options=soptions)
     print(f"******* sf_run_flow.py: Able to start selenium chrome")  
     driver.quit()
