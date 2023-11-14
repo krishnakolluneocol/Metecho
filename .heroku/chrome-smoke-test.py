@@ -1,10 +1,11 @@
 import selenium
 import selenium.webdriver
 import sys
-options = selenium.webdriver.chrome.options.Options()
-options.headless = True
+soptions = selenium.webdriver.chrome.options.Options()
+soptions.headless = True
 try:
-    selenium.webdriver.Chrome(options=options)
+    driver = selenium.webdriver.Chrome(options=soptions)
+    driver.quit()
     print(f"Able to open chrome")
 except Exception as e:
     print(f"Unable to open chrome:\n{e}")

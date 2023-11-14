@@ -5,6 +5,8 @@ import os
 import shutil
 import subprocess
 import time
+import selenium
+import selenium.webdriver
 from datetime import datetime
 
 from cumulusci.core.config import OrgConfig, TaskConfig
@@ -368,8 +370,16 @@ def create_org(
 
 def run_flow(*, cci, org_config, flow_name, project_path, user):
     """Run a flow on a scratch org"""
+    # Krishna Kollu - This is for debugging purposes and should be removed
+    soptions = selenium.webdriver.chrome.options.Options()
+    soptions.headless = True
+    driver = selenium.webdriver.Chrome(options=soptions)
+    print(f"******* sf_run_flow.py: Able to start selenium chrome")
+    driver.quit()
+    print(f"******* sf_run_flow.py: Able to exit selenium chrome")
+        
     # Run flow in a subprocess so we can control the environment
-    
+
     gh_token = user.gh_token
     command = shutil.which("cci")
     args = [command, "flow", "run", flow_name, "--org", "dev"]

@@ -40,6 +40,8 @@ from django_rq import get_scheduler, job
 from github3.exceptions import NotFoundError, UnprocessableEntity
 from github3.github import GitHub
 from github3.repos.repo import Repository
+import selenium
+import selenium.webdriver
 
 from .email_utils import get_user_facing_url
 from .gh import (
@@ -450,6 +452,14 @@ def _create_org_and_run_flow(
 
     if flow_name:
         try:
+            # Krishna Kollu - This is for debugging purposes and should be removed
+            soptions = selenium.webdriver.chrome.options.Options()
+            soptions.headless = True
+            driver = selenium.webdriver.Chrome(options=soptions)
+            print(f"******* jobs.py: Able to start selenium chrome")
+            driver.quit()
+            print(f"******* jobs.py: Able to exit selenium chrome")
+
             run_flow(
                 cci=cci,
                 org_config=org_config,
