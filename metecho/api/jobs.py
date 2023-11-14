@@ -457,7 +457,7 @@ def _create_org_and_run_flow(
             soptions.headless = True
             driver = selenium.webdriver.Chrome(options=soptions)
             print(f"******* jobs.py: Able to start selenium chrome")
-            driver.quit()
+            driver.quit() 
             print(f"******* jobs.py: Able to exit selenium chrome")
 
             run_flow(
