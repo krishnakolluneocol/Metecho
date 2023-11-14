@@ -381,7 +381,7 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
     # Debug variables set
     keys = os.environ.keys()
     keys_string = ", ".join(keys)
-    path = f"{os.environ.get('PATH')}"
+    path = f"{os.environ.get('PATH')}" 
     print(f"Environment Variable Keys: {keys_string} with path {path}")
 
     # Run flow in a subprocess so we can control the environment
