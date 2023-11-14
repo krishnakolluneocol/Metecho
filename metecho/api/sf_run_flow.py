@@ -374,7 +374,7 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
     soptions = selenium.webdriver.chrome.options.Options()
     soptions.headless = True
     driver = selenium.webdriver.Chrome(options=soptions)
-    print(f"******* sf_run_flow.py: Able to start selenium chrome")
+    print(f"******* sf_run_flow.py: Able to start selenium chrome")  
     driver.quit()
     print(f"******* sf_run_flow.py: Able to exit selenium chrome")
         
