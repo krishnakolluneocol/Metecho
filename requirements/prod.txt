@@ -353,7 +353,7 @@ secretstorage==3.3.3
     # via
     #   cumulusci
     #   keyring
-selenium==3.141.0
+selenium==4.15.2
     # via
     #   cumulusci
     #   robotframework-seleniumlibrary
