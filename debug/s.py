@@ -5,7 +5,7 @@ import subprocess
 
 logger = logging.getLogger(__name__)
 
-def run_flow():
+def run_flow(): 
     """Run a flow on a scratch org"""
     # Run flow in a subprocess so we can control the environment
     project_path = '/app'
