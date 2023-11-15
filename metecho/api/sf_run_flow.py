@@ -405,7 +405,7 @@ def run_flow(*, cci, org_config, flow_name, project_path, user):
         }
     )
     env["GITHUB_TOKEN"] = gh_token
-    #env["HOME"] = project_path
+    env["HOME"] = project_path
 
     # Old Version
     # env = {
