@@ -17,6 +17,9 @@ sed -i "s|\$HOME|${HOME}|g" "$GOOGLE_CHROME_SHIM"
 dir=$(dirname "$GOOGLE_CHROME_SHIM")
 new_file_path="$dir/google-chrome"
 cp "$GOOGLE_CHROME_SHIM" "$new_file_path"
+cat $GOOGLE_CHROME_SHIM
+cat $new_file_path
+echo "Changed Chrome SHIMS"
 
 # make Chrome available to VBT
 # Copied from https://github.com/SFDO-Tooling/MetaDeploy/pull/3468
