@@ -253,18 +253,31 @@ USE_TZ = True
 # Email settings
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="no-reply@metecho.org")
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
-if DEBUG:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Krishna Kollu wrote this code to allow for sending emails using out of box Django functionality, instead of using MailGun
+EMAIL_USING_DJANGO_BACKEND = env.bool("EMAIL_USING_DJANGO_BACKEND", default=False)
+if EMAIL_USING_DJANGO_BACKEND:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+    EMAIL_HOST = env("EMAIL_HOST")
+    EMAIL_PORT = env("EMAIL_PORT")
+    EMAIL_USE_TLS = True
     EMAIL_ENABLED = True
 else:
-    EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-    ANYMAIL = {
-        "MAILGUN_API_KEY": env("MAILGUN_API_KEY", default=""),
-        "MAILGUN_SENDER_DOMAIN": env("MAILGUN_DOMAIN", default=None),
-    }
-    EMAIL_ENABLED = (
-        ANYMAIL["MAILGUN_API_KEY"] != "" and ANYMAIL["MAILGUN_SENDER_DOMAIN"]
-    )
+    # This was the prior code that sent emails using Mailgun 
+    if DEBUG:
+        EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+        EMAIL_ENABLED = True
+    else:
+        EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+        ANYMAIL = {
+            "MAILGUN_API_KEY": env("MAILGUN_API_KEY", default=""),
+            "MAILGUN_SENDER_DOMAIN": env("MAILGUN_DOMAIN", default=None),
+        }
+        EMAIL_ENABLED = (
+            ANYMAIL["MAILGUN_API_KEY"] != "" and ANYMAIL["MAILGUN_SENDER_DOMAIN"]
+        )
 
 DAYS_BEFORE_ORG_EXPIRY_TO_ALERT = env.int("DAYS_BEFORE_ORG_EXPIRY_TO_ALERT", default=3)
 ORG_RECHECK_MINUTES = env.int("ORG_RECHECK_MINUTES", default=5)
