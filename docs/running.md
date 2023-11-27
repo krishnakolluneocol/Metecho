@@ -134,3 +134,10 @@ variable.
 - `yarn build`: builds development (unminified) static assets into `dist/` dir
 - `yarn prod`: builds production (minified) static assets into `dist/prod/` dir
 - `yarn storybook`: build storybook and run dev server
+
+## Misc Notes
+
+- If using conda, feel free to invoke it directly `conda activate p311-metecho`
+- Make sure to `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` before starting the server
+- Start redis with `redis-server`
+- Start the server with `yarn serve`

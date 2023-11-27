@@ -40,8 +40,6 @@ from django_rq import get_scheduler, job
 from github3.exceptions import NotFoundError, UnprocessableEntity
 from github3.github import GitHub
 from github3.repos.repo import Repository
-import selenium
-import selenium.webdriver
 
 from .email_utils import get_user_facing_url
 from .gh import (
@@ -452,16 +450,6 @@ def _create_org_and_run_flow(
 
     if flow_name:
         try:
-            # Krishna Kollu - This is for debugging purposes and should be removed
-            print(f"******* jobs.py start")
-            soptions = selenium.webdriver.chrome.options.Options()
-            soptions.headless = True
-            soptions.binary_location = '/app/.apt/usr/bin/google-chrome'
-            driver = selenium.webdriver.Chrome(options=soptions)
-            print(f"******* jobs.py: Able to start selenium chrome")
-            driver.quit() 
-            print(f"******* jobs.py: Able to exit selenium chrome")
-
             run_flow(
                 cci=cci,
                 org_config=org_config,
@@ -511,6 +499,7 @@ def create_branches_on_github_then_create_scratch_org(
     parent = scratch_org.parent
 
     try:
+        _notify_scratch_org_job_started(scratch_org=scratch_org)
         repo_id = parent.get_repo_id()
         commit_ish = parent.branch_name
         if (task or epic) and not commit_ish:
@@ -537,17 +526,60 @@ def create_branches_on_github_then_create_scratch_org(
             )
     except Exception as e:
         scratch_org.finalize_provision(error=e, originating_user_id=originating_user_id)
+        _notify_scratch_org_failed(scratch_org=scratch_org, error=e)
         tb = traceback.format_exc()
         logger.error(tb)
         raise
     else:
         scratch_org.finalize_provision(originating_user_id=originating_user_id)
-
+        _notify_scratch_org_created(scratch_org=scratch_org)
 
 create_branches_on_github_then_create_scratch_org_job = job(
     create_branches_on_github_then_create_scratch_org
 )
 
+def _notify_scratch_org_job_started(*, scratch_org):
+    logger.info('Scratch org provisioning job is starting')
+    subject = _("Metecho Scratch Org Is Being Provisioned")
+    body = render_to_string(
+        "scratch_org_job_started.txt",
+        {
+            "user_name": scratch_org.owner.username
+        },
+    )
+    try:
+        scratch_org.owner.notify(subject, body)
+    except Exception as e:
+        logger.error(f"Failed to send a notification that the scratch org is being provisioned: {e}")
+
+def _notify_scratch_org_created(*, scratch_org):
+    logger.info('Scratch org created successfully')
+    subject = _("Metecho Scratch Org Created Successfully")
+    body = render_to_string(
+        "scratch_org_created.txt",
+        {
+            "user_name": scratch_org.owner.username
+        },
+    )
+    try:
+        scratch_org.owner.notify(subject, body)
+    except Exception as e:
+        logger.error(f"Failed to send a notification that the scratch org was created: {e}")
+
+def _notify_scratch_org_failed(*, scratch_org, error):
+    logger.info('Scratch org failed to create successfully')
+    subject = _("Metecho Scratch Org Failed To Create")
+    body = render_to_string(
+        "scratch_org_failed.txt",
+        {
+            "user_name": scratch_org.owner.username,
+            "error": str(error)
+        },
+    )
+    try:
+        scratch_org.owner.notify(subject, body)
+    except Exception as e:
+        logger.error(f"Failed to send a notification that scratch org failed to create: {e}")
 
 def convert_to_dev_org(scratch_org, *, task, originating_user_id=None):
     """
