@@ -336,7 +336,7 @@ six==1.16.0
     #   salesforce-bulk
     #   service-identity
     #   snowfakery
-snowfakery==3.5.0
+snowfakery==3.6.1
     # via cumulusci
 soupsieve==2.3.2.post1
     # via beautifulsoup4
