@@ -27,15 +27,14 @@ honcho
 logfmt
 markdown
 pyyaml
-
 # psycopg2 is used as the database driver for Django to connect to PostgreSQL.
 # It is LGPL-licensed and we must follow these rules for compliance with Salesforce 3rd-party software policy:
 # 1. Salesforce code only links to unmodified (binary, if applicable) copies of the 3rd-party code
 # 2. Salesforce code only dynamically (not statically) links to the 3rd-party code
 # 3. Salesforce code does not derive from, is not based on, and remains separate (aside from linking) from the requested code
 psycopg2-binary
-
 rq-scheduler
+snowfakery==3.6.1
 sentry-sdk
 service_identity
 sfdo-template-helpers @ https://github.com/SFDO-Tooling/sfdo-template-helpers/archive/v0.20.0.tar.gz

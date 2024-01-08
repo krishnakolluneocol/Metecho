@@ -5,7 +5,7 @@
 #    pip-compile --output-file=requirements/prod.txt requirements/prod.in
 #
 aioredis==1.3.1
-    # via channels-redis 
+    # via channels-redis
 appdirs==1.4.4
     # via fs
 asgiref==3.5.2
@@ -55,7 +55,7 @@ charset-normalizer==3.2.0
     # via
     #   requests
     #   snowfakery
-click==8.1.3
+click==8.1.6
     # via
     #   cumulusci
     #   rq
@@ -130,10 +130,16 @@ docutils==0.16
     # via cumulusci
 drf-spectacular==0.22.1
     # via -r requirements/prod.in
-faker==17.0.0
+faker==19.3.0
     # via
     #   cumulusci
+    #   faker-edu
+    #   faker-nonprofit
     #   snowfakery
+faker-edu==1.0.0
+    # via snowfakery
+faker-nonprofit==1.0.0
+    # via snowfakery
 fs==2.4.16
     # via cumulusci
 furl==2.1.3
@@ -142,8 +148,6 @@ github3-py==3.2.0
     # via
     #   -r requirements/prod.in
     #   cumulusci
-greenlet==2.0.2
-    # via snowfakery
 gvgen==1.0
     # via snowfakery
 hashids==1.3.1
@@ -190,7 +194,7 @@ markdown-it-py==2.2.0
     # via
     #   cumulusci
     #   rich
-markupsafe==2.1.2
+markupsafe==2.1.3
     # via
     #   cumulusci
     #   jinja2
@@ -219,7 +223,7 @@ pyasn1-modules==0.2.8
     # via service-identity
 pycparser==2.21
     # via cffi
-pydantic==1.10.5
+pydantic==1.10.12
     # via
     #   cumulusci
     #   snowfakery
@@ -262,7 +266,7 @@ redis==4.3.4
     # via
     #   django-rq
     #   rq
-requests==2.28.2
+requests==2.29.0
     # via
     #   cumulusci
     #   django-allauth
@@ -337,10 +341,12 @@ six==1.16.0
     #   service-identity
     #   snowfakery
 snowfakery==3.6.1
-    # via cumulusci
+    # via
+    #   -r requirements/prod.in
+    #   cumulusci
 soupsieve==2.3.2.post1
     # via beautifulsoup4
-sqlalchemy==1.4.46
+sqlalchemy==1.4.49
     # via
     #   cumulusci
     #   snowfakery
@@ -350,7 +356,7 @@ twisted[tls]==22.4.0
     # via daphne
 txaio==22.2.1
     # via autobahn
-typing-extensions==4.5.0
+typing-extensions==4.7.1
     # via
     #   pydantic
     #   snowfakery
@@ -361,7 +367,7 @@ uritemplate==4.1.1
     # via
     #   drf-spectacular
     #   github3-py
-urllib3==1.26.14
+urllib3==1.26.16
     # via
     #   requests
     #   selenium
